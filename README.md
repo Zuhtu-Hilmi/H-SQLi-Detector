@@ -29,3 +29,32 @@ Model, ~31.000 satırlık temiz ve zararlı web trafiği içeren bir veri seti k
 ```bash
 git clone [https://github.com/Zuhtu-Hilmi/H-SQLi-Detector.git](https://github.com/Zuhtu-Hilmi/H-SQLi-Detector.git)
 cd H-SQLi-Detector
+```
+
+### 2. Gerekli Kütüphaneleri Yükleyin
+Sanal ortam (virtual environment) kullanmanız tavsiye edilir.
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Sistemi Başlatın (İnteraktif CLI)
+Hazır eğitilmiş modeli (models/model.pkl) kullanarak canlı trafik simülasyonunu başlatmak için:
+```bash
+python src/main.py
+```
+
+## 🧪 Canlı Test Senaryoları (Bypass Denemeleri)
+
+Sistemi çalıştırdığınızda aşağıdaki sorguları terminale girerek katmanların tepkisini test edebilirsiniz:
+
+| Girdi Örneği | Beklenen Karar Katmanı | Açıklama |
+| :--- | :--- | :--- |
+| `merhaba dunya` | 🟢 **SAFE** | Normal kullanıcı trafiği her iki katmandan da geçer. |
+| `admin' OR 1=1 --` | 🔴 **Katman 1 (İmza)** | Klasik totoloji. ML yorulmadan statik olarak engellenir. |
+| `admin' OR 5 > 2` | 🟠 **Katman 2 (ML)** | İmza motorunu kör eden zeki atak, anlamsal olarak ML tarafından yakalanır. |
+| `1' AND (SELECT count(*) FROM users) > 0` | 🟠 **Katman 2 (ML)** | İmzasız gizli (blind) saldırı anomalisi tespit edilir. |
+
+## 📁 Veri Seti Hakkında
+
+Projede kullanılan modelin eğitimi için Kaggle açık kaynak veri setlerinden faydalanılmıştır. Boyut ve mahremiyet kısıtlamaları nedeniyle orijinal veri seti depoya eklenmemiş, sistemin anında çalışması için eğitilmiş .pkl dosyaları models/ dizinine dahil edilmiştir. Model eğitimini sıfırdan yapmak isterseniz kendi veri setinizi ana dizine ekleyip python src/train.py betiğini çalıştırabilirsiniz.
+
