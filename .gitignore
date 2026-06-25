@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+venv/
+Modified_SQL_Dataset.csv  # Eğer tam veri setini yüklemek istemiyorsanız buraya adını yazın
